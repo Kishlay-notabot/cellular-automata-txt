@@ -40,6 +40,20 @@ fps = 10
 surface = pygame.display.set_mode(res)
 clock = pygame.time.Clock()
 
+# Text input box
+input_box = pygame.Rect(10, height - 40, width - 20, 30)
+font = pygame.font.Font(None, 32)
+text = ''
+color_inactive = pygame.Color('lightskyblue3')
+color_active = pygame.Color('dodgerblue2')
+color = color_inactive
+
+active = False
+
+# Button
+button = pygame.Rect(width // 2 - 50, height - 80, 100, 50)
+button_text = font.render('Render', True, (255, 255, 255))
+
 # Main loop
 while True:
     surface.fill(pygame.Color('black'))
@@ -52,9 +66,38 @@ while True:
     
     # Draw letters
     current_x = 0
-    for letter in ['a', 'b', 'c']:
-        draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
-        current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
+    for letter in text:
+        if letter in letter_configs:
+            draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
+            current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
+    
+    # Render text input box
+    txt_surface = font.render(text, True, color)
+    pygame.draw.rect(surface, color, input_box, 2)
+    surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+    
+    # Render button
+    
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if input_box.collidepoint(event.pos):
+                active = not active
+                color = color_active if active else color_inactive
+            else:
+                active = False
+                color = color_active if active else color_inactive
+        if event.type == pygame.KEYDOWN:
+            if active:
+                if event.key == pygame.K_RETURN:
+                    # Render the entered text
+                    text = text.lower()
+                elif event.key == pygame.K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
     
     pygame.display.flip()
     clock.tick(fps)
