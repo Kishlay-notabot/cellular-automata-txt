@@ -20,126 +20,20 @@ letter_configs = {
           [1,0,0,1],
           [1,0,0,1],
           [1,0,0,1],
-          [1,1,1,0]],
-    'e': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'f': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'g': [[0,1,1,1],
-          [1,0,0,0],
-          [1,0,1,1],
-          [1,0,0,1],
-          [0,1,1,1]],
-    'h': [[1,0,0,1],
-          [1,0,0,1],
-          [1,1,1,1],
-          [1,0,0,1],
-          [1,0,0,1]],
-    'i': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [1,1,1,1]],
-    'j': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'k': [[1,0,0,1],
-          [1,0,1,0],
-          [1,1,0,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    'l': [[1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'm': [[1,0,0,0,1],
-          [1,1,0,1,1],
-          [1,0,1,0,1],
-          [1,0,0,0,1],
-          [1,0,0,0,1]],
-    'n': [[1,0,0,0,1],
-          [1,1,0,0,1],
-          [1,0,1,0,1],
-          [1,0,0,1,1],
-          [1,0,0,0,1]],
-    'o': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'p': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'q': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,1,1],
-          [0,1,1,1]],
-    'r': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    's': [[0,1,1,1],
-          [1,0,0,0],
-          [0,1,1,0],
-          [0,0,0,1],
-          [1,1,1,0]],
-    't': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0]],
-    'u': [[1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'v': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,1,0,1,0],
-          [0,0,1,0,0]],
-    'w': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [1,0,1,0,1],
-          [1,1,0,1,1],
-          [1,0,0,0,1]],
-    'x': [[1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,0,1,0,0],
-          [0,1,0,1,0],
-          [1,0,0,0,1]],
-    'y': [[1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0],
-          [0,0,0,1],
-          [0,0,0,1]],
-    'z': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,1,0],
-          [0,1,0,0],
-          [1,1,1,1]]    
+          [1,1,1,0]] 
 }
- 
+
 def draw_configuration(surface, config, pos, tile_size):
     for y, row in enumerate(config):
         for x, value in enumerate(row):
             if value == 1:
                 rect = pygame.Rect((pos[0] + x) * tile_size, (pos[1] + y) * tile_size, tile_size, tile_size)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
- 
+
+def print_grid(grid):
+    for row in grid:
+        print(row)
+
 pygame.init()
  
 res = width, height = 1000, 700
@@ -159,9 +53,8 @@ color = color_inactive
 
 active = False
 
-# Button
-button = pygame.Rect(width // 2 - 50, height - 80, 100, 50)
-button_text = font.render('Render', True, (255, 255, 255))
+# Initialize grid
+grid = [[0] * w for _ in range(h)]
 
 # Main loop
 while True:
@@ -173,7 +66,8 @@ while True:
     for y in range(0, height, tile):
         pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
     
-    # Draw letters
+    # Draw letters and update grid array
+    grid = [[0] * w for _ in range(h)]
     current_x = 1
     for letter in text:
         if letter == ' ':
@@ -181,6 +75,10 @@ while True:
             current_x += 1
         else:
             draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
+            for y, row in enumerate(letter_configs[letter]):
+                for x, value in enumerate(row):
+                    if value == 1:
+                        grid[1 + y][current_x + x - 1] = 1  # Update grid position
             current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
     
     # Render text input box
@@ -189,6 +87,9 @@ while True:
     surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
     
     # Render button
+    
+    # Print grid to console
+    print_grid(grid)
     
     # Handle events
     for event in pygame.event.get():
