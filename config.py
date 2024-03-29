@@ -7,7 +7,16 @@ letter_configs = {
           [1,1,1,1],
           [1,0,0,1],
           [1,0,0,1]],
-    # Define configurations for other letters
+    'b': [[1,1,1,0],
+          [1,0,0,1],
+          [1,1,1,0],
+          [1,0,0,1],
+          [1,1,1,0]],
+    'c': [[0,1,1,1],
+          [1,0,0,0],
+          [1,0,0,0],
+          [1,0,0,0],
+          [0,1,1,1]]
 }
 
 # Function to draw a configuration at a given position
@@ -41,8 +50,11 @@ while True:
     for y in range(0, height, tile):
         pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
     
-    # Draw letter 'a' at grid position (1, 1)
-    draw_configuration(surface, letter_configs['a'], (0, 0), tile)
+    # Draw letters
+    current_x = 0
+    for letter in ['a', 'b', 'c']:
+        draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
+        current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
     
     pygame.display.flip()
     clock.tick(fps)
