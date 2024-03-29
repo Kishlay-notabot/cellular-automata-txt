@@ -174,9 +174,12 @@ while True:
         pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
     
     # Draw letters
-    current_x = 0
+    current_x = 1
     for letter in text:
-        if letter in letter_configs:
+        if letter == ' ':
+            # Add space equivalent to one box width
+            current_x += 1
+        else:
             draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
             current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
     
