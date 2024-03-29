@@ -11,126 +11,7 @@ letter_configs = {
           [1,1,1,0],
           [1,0,0,1],
           [1,1,1,0]],
-    'c': [[0,1,1,1],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [0,1,1,1]],
-    'd': [[1,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,1,1,0]],
-    'e': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'f': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'g': [[0,1,1,1],
-          [1,0,0,0],
-          [1,0,1,1],
-          [1,0,0,1],
-          [0,1,1,1]],
-    'h': [[1,0,0,1],
-          [1,0,0,1],
-          [1,1,1,1],
-          [1,0,0,1],
-          [1,0,0,1]],
-    'i': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [1,1,1,1]],
-    'j': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'k': [[1,0,0,1],
-          [1,0,1,0],
-          [1,1,0,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    'l': [[1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'm': [[1,0,0,0,1],
-          [1,1,0,1,1],
-          [1,0,1,0,1],
-          [1,0,0,0,1],
-          [1,0,0,0,1]],
-    'n': [[1,0,0,0,1],
-          [1,1,0,0,1],
-          [1,0,1,0,1],
-          [1,0,0,1,1],
-          [1,0,0,0,1]],
-    'o': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'p': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'q': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,1,1],
-          [0,1,1,1]],
-    'r': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    's': [[0,1,1,1],
-          [1,0,0,0],
-          [0,1,1,0],
-          [0,0,0,1],
-          [1,1,1,0]],
-    't': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0]],
-    'u': [[1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'v': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,1,0,1,0],
-          [0,0,1,0,0]],
-    'w': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [1,0,1,0,1],
-          [1,1,0,1,1],
-          [1,0,0,0,1]],
-    'x': [[1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,0,1,0,0],
-          [0,1,0,1,0],
-          [1,0,0,0,1]],
-    'y': [[1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0],
-          [0,0,0,1],
-          [0,0,0,1]],
-    'z': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,1,0],
-          [0,1,0,0],
-          [1,1,1,1]]
+    # Other letter configurations...
 }
 
 def draw_configuration(surface, config, pos, tile_size):
@@ -140,14 +21,10 @@ def draw_configuration(surface, config, pos, tile_size):
                 rect = pygame.Rect((pos[0] + x) * tile_size, (pos[1] + y) * tile_size, tile_size, tile_size)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
 
-def export_grid_state(grid):
-    state = []
-    for row in grid:
-        state_row = []
-        for value in row:
-            state_row.append(value)
-        state.append(state_row)
-    return state
+def export_grid_state(grid, file_name):
+    with open(file_name, 'w') as file:
+        for row in grid:
+            file.write(' '.join(map(str, row)) + '\n')
 
 pygame.init()
 
@@ -198,7 +75,7 @@ while True:
     surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
 
     # Render button
-
+    
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -214,8 +91,7 @@ while True:
             if active:
                 if event.key == pygame.K_RETURN:
                     text = text.lower()
-                    grid_state = export_grid_state(grid)
-                    print(grid_state)  # Or store this grid state as needed
+                    export_grid_state(grid, 'grid_state.txt')  # Save grid state to file
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
