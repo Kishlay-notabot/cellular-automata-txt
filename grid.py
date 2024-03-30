@@ -91,13 +91,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if active:
                 if event.key == pygame.K_RETURN:
-                    # Clear the white pixels
-                    for y in range(h):
-                        for x in range(w):
-                            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
-                            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
-                                pygame.draw.rect(surface, pygame.Color('black'), cell_rect)
-                    # Copy current grid to final_grid
+                    # Clear the white pixels and store cell configuration in final_grid
                     final_grid = []
                     for y in range(h):
                         row = []
@@ -105,6 +99,10 @@ while True:
                             cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
                             if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
                                 row.append(1)
+                                pygame.draw.rect(surface, pygame.Color('black'), cell_rect)
+                                
+                                print('cleared')
+                              
                             else:
                                 row.append(0)
                         final_grid.append(row)
@@ -112,13 +110,13 @@ while True:
                     text = text[:-1]
                 else:
                     text += event.unicode
-    
-    # Display the final grid
+    # Display the final grid stored in final_grid
     for y in range(h):
         for x in range(w):
             if final_grid and final_grid[y][x] == 1:
                 rect = pygame.Rect(x * tile, y * tile, tile, tile)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
+                print('renderedfinalgrid')
     
     pygame.display.flip()
     clock.tick(fps)
