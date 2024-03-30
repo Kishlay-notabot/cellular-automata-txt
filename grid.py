@@ -1,4 +1,5 @@
 import pygame
+import time
 
 letter_configs = {
     'a': [[0,1,1,0],
@@ -49,6 +50,7 @@ color = color_inactive
 
 active = False
 
+final_grid = []
 
 # Main loop
 while True:
@@ -70,23 +72,6 @@ while True:
             draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
             current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
     
-    # Extract the final grid
-    final_grid = []
-    for y in range(h):
-        row = []
-        for x in range(w):
-            # Check if the cell is filled with color (white)
-            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
-            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
-                row.append(1)
-            else:
-                row.append(0)
-        final_grid.append(row)
-
-    # with open('final_grid.txt', 'w') as file:
-    #     for row in final_grid:
-    #         file.write(' '.join(map(str, row)) + '\n')
-    
     # Render text input box
     txt_surface = font.render(text, True, color)
     pygame.draw.rect(surface, color, input_box, 2)
@@ -106,12 +91,34 @@ while True:
         if event.type == pygame.KEYDOWN:
             if active:
                 if event.key == pygame.K_RETURN:
-                    # Render the entered text
-                    text = text.lower()
+                    # Clear the white pixels
+                    for y in range(h):
+                        for x in range(w):
+                            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
+                            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
+                                pygame.draw.rect(surface, pygame.Color('black'), cell_rect)
+                    # Copy current grid to final_grid
+                    final_grid = []
+                    for y in range(h):
+                        row = []
+                        for x in range(w):
+                            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
+                            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
+                                row.append(1)
+                            else:
+                                row.append(0)
+                        final_grid.append(row)
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
                     text += event.unicode
+    
+    # Display the final grid
+    for y in range(h):
+        for x in range(w):
+            if final_grid and final_grid[y][x] == 1:
+                rect = pygame.Rect(x * tile, y * tile, tile, tile)
+                pygame.draw.rect(surface, pygame.Color('white'), rect)
     
     pygame.display.flip()
     clock.tick(fps)

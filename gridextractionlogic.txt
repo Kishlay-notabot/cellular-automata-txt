@@ -1,0 +1,12 @@
+    # Extract the final grid
+    final_grid = []
+    for y in range(h):
+        row = []
+        for x in range(w):
+            # Check if the cell is filled with color (white)
+            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
+            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
+                row.append(1)
+            else:
+                row.append(0)
+        final_grid.append(row)
