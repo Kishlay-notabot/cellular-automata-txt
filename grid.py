@@ -49,9 +49,6 @@ color = color_inactive
 
 active = False
 
-# Button
-button = pygame.Rect(width // 2 - 50, height - 80, 100, 50)
-button_text = font.render('Render', True, (255, 255, 255))
 
 # Main loop
 while True:
@@ -85,18 +82,15 @@ while True:
             else:
                 row.append(0)
         final_grid.append(row)
-    
-    # Save the final grid to a text file
-    with open('final_grid.txt', 'w') as file:
-        for row in final_grid:
-            file.write(' '.join(map(str, row)) + '\n')
+
+    # with open('final_grid.txt', 'w') as file:
+    #     for row in final_grid:
+    #         file.write(' '.join(map(str, row)) + '\n')
     
     # Render text input box
     txt_surface = font.render(text, True, color)
     pygame.draw.rect(surface, color, input_box, 2)
     surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
-    
-    # Render button
     
     # Handle events
     for event in pygame.event.get():
