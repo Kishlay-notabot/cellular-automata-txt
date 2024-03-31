@@ -1,11 +1,6 @@
 import pygame
-glider_config = [
-    [0, 1, 0],
-    [0, 0, 1],
-    [1, 1, 1]
-]
+
 letter_configs = {
-    '1': glider_config,
     'a': [[0,1,1,0],
           [1,0,0,1],
           [1,1,1,1],
@@ -25,117 +20,7 @@ letter_configs = {
           [1,0,0,1],
           [1,0,0,1],
           [1,0,0,1],
-          [1,1,1,0]],
-    'e': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'f': [[1,1,1,1],
-          [1,0,0,0],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'g': [[0,1,1,1],
-          [1,0,0,0],
-          [1,0,1,1],
-          [1,0,0,1],
-          [0,1,1,1]],
-    'h': [[1,0,0,1],
-          [1,0,0,1],
-          [1,1,1,1],
-          [1,0,0,1],
-          [1,0,0,1]],
-    'i': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [1,1,1,1]],
-    'j': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'k': [[1,0,0,1],
-          [1,0,1,0],
-          [1,1,0,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    'l': [[1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,0,0,0],
-          [1,1,1,1]],
-    'm': [[1,0,0,0,1],
-          [1,1,0,1,1],
-          [1,0,1,0,1],
-          [1,0,0,0,1],
-          [1,0,0,0,1]],
-    'n': [[1,0,0,0,1],
-          [1,1,0,0,1],
-          [1,0,1,0,1],
-          [1,0,0,1,1],
-          [1,0,0,0,1]],
-    'o': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'p': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,0,0],
-          [1,0,0,0]],
-    'q': [[0,1,1,0],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,1,1],
-          [0,1,1,1]],
-    'r': [[1,1,1,0],
-          [1,0,0,1],
-          [1,1,1,0],
-          [1,0,1,0],
-          [1,0,0,1]],
-    's': [[0,1,1,1],
-          [1,0,0,0],
-          [0,1,1,0],
-          [0,0,0,1],
-          [1,1,1,0]],
-    't': [[1,1,1,1],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0],
-          [0,1,0,0]],
-    'u': [[1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0]],
-    'v': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,1,0,1,0],
-          [0,0,1,0,0]],
-    'w': [[1,0,0,0,1],
-          [1,0,0,0,1],
-          [1,0,1,0,1],
-          [1,1,0,1,1],
-          [1,0,0,0,1]],
-    'x': [[1,0,0,0,1],
-          [0,1,0,1,0],
-          [0,0,1,0,0],
-          [0,1,0,1,0],
-          [1,0,0,0,1]],
-    'y': [[1,0,0,1],
-          [1,0,0,1],
-          [0,1,1,0],
-          [0,0,0,1],
-          [0,0,0,1]],
-    'z': [[1,1,1,1],
-          [0,0,0,1],
-          [0,0,1,0],
-          [0,1,0,0],
-          [1,1,1,1]]    
+          [1,1,1,0]]   
 }
  
 def draw_configuration(surface, config, pos, tile_size):
@@ -148,7 +33,7 @@ def draw_configuration(surface, config, pos, tile_size):
 pygame.init()
  
 res = width, height = 1000, 700
-tile = 20
+tile = 5
 w, h = width // tile, height // tile
 fps = 10 
 surface = pygame.display.set_mode(res)
@@ -164,9 +49,6 @@ color = color_inactive
 
 active = False
 
-# Button
-button = pygame.Rect(width // 2 - 50, height - 80, 100, 50)
-button_text = font.render('Render', True, (255, 255, 255))
 
 # Main loop
 while True:
@@ -188,12 +70,27 @@ while True:
             draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
             current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
     
+    # Extract the final grid
+    final_grid = []
+    for y in range(h):
+        row = []
+        for x in range(w):
+            # Check if the cell is filled with color (white)
+            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
+            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
+                row.append(1)
+            else:
+                row.append(0)
+        final_grid.append(row)
+
+    # with open('final_grid.txt', 'w') as file:
+    #     for row in final_grid:
+    #         file.write(' '.join(map(str, row)) + '\n')
+    
     # Render text input box
     txt_surface = font.render(text, True, color)
     pygame.draw.rect(surface, color, input_box, 2)
     surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
-    
-    # Render button
     
     # Handle events
     for event in pygame.event.get():
