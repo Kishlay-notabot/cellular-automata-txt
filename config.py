@@ -69,24 +69,14 @@ while True:
         else:
             draw_configuration(surface, letter_configs[letter], (current_x, 1), tile)
             current_x += len(letter_configs[letter][0]) + 1  # Add gap of one grid box
-    
-    # Extract the final grid
-    final_grid = []
-    for y in range(h):
-        row = []
-        for x in range(w):
-            # Check if the cell is filled with color (white)
-            cell_rect = pygame.Rect(x * tile, y * tile, tile, tile)
-            if surface.get_at(cell_rect.topleft) == pygame.Color('white'):
-                row.append(1)
-            else:
-                row.append(0)
-        final_grid.append(row)
 
-    # with open('final_grid.txt', 'w') as file:
-    #     for row in final_grid:
-    #         file.write(' '.join(map(str, row)) + '\n')
-    
+    # Loop through the grid to check cell values and print 'yes' or 'no'
+    for y in range(h):
+        for x in range(w):
+            cell_value = 1 if surface.get_at((x * tile + 1, y * tile + 1)) == pygame.Color('white') else 0
+            print("yes" if cell_value == 1 else "no", end=" ")
+        print()
+
     # Render text input box
     txt_surface = font.render(text, True, color)
     pygame.draw.rect(surface, color, input_box, 2)
