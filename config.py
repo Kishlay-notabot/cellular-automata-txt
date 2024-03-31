@@ -1,6 +1,11 @@
 import pygame
-
+glider_config = [
+    [0, 1, 0],
+    [0, 0, 1],
+    [1, 1, 1]
+]
 letter_configs = {
+    '1': glider_config,
     'a': [[0,1,1,0],
           [1,0,0,1],
           [1,1,1,1],
@@ -143,7 +148,7 @@ def draw_configuration(surface, config, pos, tile_size):
 pygame.init()
  
 res = width, height = 1000, 700
-tile = 5
+tile = 20
 w, h = width // tile, height // tile
 fps = 10 
 surface = pygame.display.set_mode(res)
