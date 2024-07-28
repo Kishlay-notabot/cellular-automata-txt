@@ -141,28 +141,6 @@ def draw_configuration(surface, config, pos, tile_size):
                 rect = pygame.Rect((pos[0] + x) * tile_size, (pos[1] + y) * tile_size, tile_size, tile_size)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
 
-def get_live_neighbors(board, x, y):
-    neighbors = 0
-    for dy in [-1, 0, 1]:
-        for dx in [-1, 0, 1]:
-            if not (dx == 0 and dy == 0):
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < width and 0 <= ny < height:
-                    neighbors += board[ny][nx]
-    return neighbors
-
-def update_board(board):
-    new_board = [[0 for _ in range(width)] for _ in range(height)]
-    for y in range(height):
-        for x in range(width):
-            live_neighbors = get_live_neighbors(board, x, y)
-            if board[y][x] == 1:
-                if live_neighbors == 2 or live_neighbors == 3:
-                    new_board[y][x] = 1
-            else:
-                if live_neighbors == 3:
-                    new_board[y][x] = 1
-    return new_board
 
 pygame.init()
 
@@ -241,8 +219,6 @@ while running:
                 else:
                     text += event.unicode
 
-    # Update the game board
-    board = update_board(board)
 
     pygame.display.flip()
     clock.tick(fps)
