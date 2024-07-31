@@ -146,7 +146,6 @@ def update_board(board, width, height):
     new_board = np.zeros((height, width), dtype=int)
     for y in range(height):
         for x in range(width):
-            # Calculate the number of neighbors
             neighbors = (
                 board[(y-1) % height, (x-1) % width] +
                 board[(y-1) % height, x] +
@@ -157,7 +156,6 @@ def update_board(board, width, height):
                 board[(y+1) % height, x] +
                 board[(y+1) % height, (x+1) % width]
             )
-            # Apply Conway's Game of Life rules
             if board[y, x] == 1:
                 new_board[y, x] = 1 if neighbors == 2 or neighbors == 3 else 0
             else:
@@ -169,7 +167,9 @@ pygame.init()
 res = width, height = 1000, 700
 tile = 10
 w, h = width // tile, height // tile
-fps = 60
+fps = 60  # Control the display refresh rate
+simulation_speed = 5  # Control the speed of simulation updates
+
 surface = pygame.display.set_mode(res)
 clock = pygame.time.Clock()
 
@@ -188,7 +188,8 @@ board = np.zeros((h, w), dtype=int)
 
 # Main loop
 running = True
-simulate = False
+last_update_time = pygame.time.get_ticks()
+time_between_updates = 1000 // simulation_speed  # Time between updates in milliseconds
 
 while running:
     surface.fill(pygame.Color('black'))
@@ -238,16 +239,18 @@ while running:
                                     board[current_y + y - 1, current_x + x - 1] = value
                             current_x += len(config[0]) + 1
                     text = ''
-                    simulate = True
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
                     text += event.unicode
 
-    if simulate:
+    # Simulation update
+    current_time = pygame.time.get_ticks()
+    if current_time - last_update_time >= time_between_updates:
         board = update_board(board, w, h)
+        last_update_time = current_time
 
     pygame.display.flip()
-    clock.tick(fps)
+    clock.tick(fps)  # Control display refresh rate and overall frame rate
 
 pygame.quit()
