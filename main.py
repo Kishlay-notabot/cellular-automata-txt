@@ -232,8 +232,8 @@ while running:
             if active:
                 if event.key == pygame.K_RETURN:
                     # Append letter configurations to the board
-                    current_x = w //2 
-                    current_y = h //2
+                    current_x = 10
+                    current_y = 10
                     for letter in text:
                         if letter == ' ':
                             current_x += 1
