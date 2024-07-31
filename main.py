@@ -1,5 +1,4 @@
 import pygame
-from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 
 letter_configs = {
@@ -190,66 +189,65 @@ board = np.zeros((h, w), dtype=int)
 # Main loop
 running = True
 simulate = False
-with ThreadPoolExecutor() as executor:
-    while running:
-        surface.fill(pygame.Color('black'))
 
-        # Draw grid lines
-        for x in range(0, width, tile):
-            pygame.draw.line(surface, pygame.Color('dimgray'), (x, 0), (x, height))
-        for y in range(0, height, tile):
-            pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
+while running:
+    surface.fill(pygame.Color('black'))
 
-        # Draw cells
-        for y in range(h):
-            for x in range(w):
-                if board[y, x] == 1:
-                    rect = pygame.Rect(x * tile, y * tile, tile, tile)
-                    pygame.draw.rect(surface, pygame.Color('white'), rect)
+    # Draw grid lines
+    for x in range(0, width, tile):
+        pygame.draw.line(surface, pygame.Color('dimgray'), (x, 0), (x, height))
+    for y in range(0, height, tile):
+        pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
 
-        # Render text input box
-        txt_surface = font.render(text, True, color)
-        pygame.draw.rect(surface, color, input_box, 2)
-        surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+    # Draw cells
+    for y in range(h):
+        for x in range(w):
+            if board[y, x] == 1:
+                rect = pygame.Rect(x * tile, y * tile, tile, tile)
+                pygame.draw.rect(surface, pygame.Color('white'), rect)
 
-        # Handle events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(event.pos):
-                    active = not active
-                    color = color_active if active else color_inactive
+    # Render text input box
+    txt_surface = font.render(text, True, color)
+    pygame.draw.rect(surface, color, input_box, 2)
+    surface.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if input_box.collidepoint(event.pos):
+                active = not active
+                color = color_active if active else color_inactive
+            else:
+                active = False
+                color = color_active if active else color_inactive
+        if event.type == pygame.KEYDOWN:
+            if active:
+                if event.key == pygame.K_RETURN:
+                    # Append letter configurations to the board
+                    current_x = 1
+                    current_y = 1
+                    for letter in text:
+                        if letter == ' ':
+                            current_x += 1
+                        else:
+                            config = letter_configs.get(letter.lower(), [])
+                            for y, row in enumerate(config):
+                                for x, value in enumerate(row):
+                                    board[current_y + y - 1, current_x + x - 1] = value
+                            current_x += len(config[0]) + 1
+                    text = ''
+                    simulate = True
+                elif event.key == pygame.K_BACKSPACE:
+                    text = text[:-1]
                 else:
-                    active = False
-                    color = color_active if active else color_inactive
-            if event.type == pygame.KEYDOWN:
-                if active:
-                    if event.key == pygame.K_RETURN:
-                        # Append letter configurations to the board
-                        current_x = 1
-                        current_y = 1
-                        for letter in text:
-                            if letter == ' ':
-                                current_x += 1
-                            else:
-                                config = letter_configs.get(letter, [])
-                                for y, row in enumerate(config):
-                                    for x, value in enumerate(row):
-                                        board[current_y + y - 1, current_x + x - 1] = value
-                                current_x += len(config[0]) + 1
-                        text = ''
-                        simulate = True
-                    elif event.key == pygame.K_BACKSPACE:
-                        text = text[:-1]
-                    else:
-                        text += event.unicode
+                    text += event.unicode
 
-        if simulate:
-            future = executor.submit(update_board, board, w, h)
-            board = future.result()
+    if simulate:
+        board = update_board(board, w, h)
 
-        pygame.display.flip()
-        clock.tick(fps)
+    pygame.display.flip()
+    clock.tick(fps)
 
 pygame.quit()
