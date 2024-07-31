@@ -152,21 +152,20 @@ def update_board(board, width, height):
     new_board = np.zeros((height, width), dtype=int)
     for y in range(height):
         for x in range(width):
-            neighbors = (
-                board[(y-1) % height, (x-1) % width] +
-                board[(y-1) % height, x] +
-                board[(y-1) % height, (x+1) % width] +
-                board[y, (x-1) % width] +
-                board[y, (x+1) % width] +
-                board[(y+1) % height, (x-1) % width] +
-                board[(y+1) % height, x] +
-                board[(y+1) % height, (x+1) % width]
-            )
+            neighbors = 0
+            for dy in [-1, 0, 1]:
+                for dx in [-1, 0, 1]:
+                    if dy == 0 and dx == 0:
+                        continue
+                    ny, nx = y + dy, x + dx
+                    if 0 <= ny < height and 0 <= nx < width:
+                        neighbors += board[ny, nx]
             if board[y, x] == 1:
                 new_board[y, x] = 1 if neighbors == 2 or neighbors == 3 else 0
             else:
                 new_board[y, x] = 1 if neighbors == 3 else 0
     return new_board
+
 
 pygame.init()
 
