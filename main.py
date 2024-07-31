@@ -2,6 +2,12 @@ import pygame
 import numpy as np
 
 letter_configs = {
+
+      '.': [[0,0,0,0],
+            [0,0,0,1],
+            [0,1,0,1],
+            [0,0,1,1]],
+
     'a': [[0, 1, 1, 0],
           [1, 0, 0, 1],
           [1, 1, 1, 1],
@@ -164,11 +170,11 @@ def update_board(board, width, height):
 
 pygame.init()
 
-res = width, height = 1000, 700
+res = width, height = 1200, 700
 tile = 10
 w, h = width // tile, height // tile
 fps = 60  # Control the display refresh rate
-simulation_speed = 5  # Control the speed of simulation updates
+simulation_speed = 60  # Control the speed of simulation updates
 
 surface = pygame.display.set_mode(res)
 clock = pygame.time.Clock()
