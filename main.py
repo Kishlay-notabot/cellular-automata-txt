@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-
+# the "k.k. config isnt giving the final equilibrium as the past version[s]"
 letter_configs = {
 
       '.': [[0,0,0,0],
