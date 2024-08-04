@@ -173,7 +173,7 @@ simulation_speed = 60  # Control the speed of simulation updates
 
 surface = pygame.display.set_mode(viewport)
 colortab = pygame.color.Color("#FFFFFF")
-pygame.draw.rect(surface, colortab,[1200,0,200,700])
+
 clock = pygame.time.Clock()
 
 # Text input box
@@ -195,6 +195,8 @@ last_update_time = pygame.time.get_ticks()
 time_between_updates = 1000 // simulation_speed  # Time between updates in milliseconds
 
 while running:
+    pygame.draw.rect(surface, colortab,[1200,0,200,700])
+    surface.fill(pygame.Color('black'))
 
     # Draw grid lines
     for x in range(0, width, tile):
