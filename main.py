@@ -141,12 +141,7 @@ letter_configs = {
           [1,1,1,1]]
 }
 
-# def draw_configuration(surface, config, pos, tile_size):
-#     for y, row in enumerate(config):
-#         for x, value in enumerate(row):
-#             if value == 1:
-#                 rect = pygame.Rect((pos[0] + x) * tile_size, (pos[1] + y) * tile_size, tile_size, tile_size)
-#                 pygame.draw.rect(surface, pygame.Color('white'), rect)
+
 
 def update_board(board, width, height):
     new_board = np.zeros((height, width), dtype=int)
