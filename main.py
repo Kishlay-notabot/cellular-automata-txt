@@ -1,5 +1,8 @@
 import pygame
 import numpy as np
+import pygame_widgets
+from pygame_widgets.slider import Slider
+from pygame_widgets.textbox import TextBox
 # the "k.k. config isnt giving the final equilibrium as the past version[s]"
 letter_configs = {
 
@@ -165,22 +168,27 @@ def update_board(board, width, height):
 pygame.init()
 
 res = width, height = 1200, 700
+viewport = 1400, 700
 tile = 10
 w, h = width // tile, height // tile
 fps = 60  # Control the display refresh rate
 simulation_speed = 60  # Control the speed of simulation updates
 
-surface = pygame.display.set_mode(res)
+surface = pygame.display.set_mode(viewport)
 clock = pygame.time.Clock()
+
 
 # Text input box
 input_box = pygame.Rect(10, height - 40, width - 20, 30)
+colortab = pygame.color.Color("#FFFFFF")
+pygame.draw.rect(surface, colortab,[1200,0,200,700])
 font = pygame.font.Font(None, 32)
 text = ''
 color_inactive = pygame.Color('lightskyblue3')
 color_active = pygame.Color('dodgerblue2')
 color = color_inactive
-
+grid_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+grid_surface.fill(pygame.Color('black'))
 active = False
 
 # Game board
@@ -192,13 +200,12 @@ last_update_time = pygame.time.get_ticks()
 time_between_updates = 1000 // simulation_speed  # Time between updates in milliseconds
 
 while running:
-    surface.fill(pygame.Color('black'))
 
     # Draw grid lines
     for x in range(0, width, tile):
-        pygame.draw.line(surface, pygame.Color('dimgray'), (x, 0), (x, height))
+        pygame.draw.line(grid_surface, pygame.Color('dimgray'), (x, 0), (x, height))
     for y in range(0, height, tile):
-        pygame.draw.line(surface, pygame.Color('dimgray'), (0, y), (width, y))
+        pygame.draw.line(grid_surface, pygame.Color('dimgray'), (0, y), (width, y))
 
     # Draw cells
     for y in range(h):
@@ -207,6 +214,7 @@ while running:
                 rect = pygame.Rect(x * tile, y * tile, tile, tile)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
 
+    surface.blit(grid_surface, (0, 0))
     # Render text input box
     txt_surface = font.render(text, True, color)
     pygame.draw.rect(surface, color, input_box, 2)
