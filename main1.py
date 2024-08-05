@@ -175,9 +175,10 @@ rect_x, rect_y =  10 , 650
 rect_width, rect_height = 1150, 30
 rect_color = (255, 0, 0)
 surface_full = pygame.display.set_mode(res)
-viewport_surface = pygame.Surface(viewport_left)
-viewport_surface.fill((128, 128, 128)) 
+viewport_surface_left = pygame.Surface(viewport_left)
+viewport_surface_left.fill((128, 128, 128)) 
 clock = pygame.time.Clock()
+# add a viewport surface right for the tab, 200x700
 
 
 
@@ -187,7 +188,7 @@ clock = pygame.time.Clock()
 # main loop
 running = True
 while running:
-      surface_full.blit(viewport_surface, (0, 0))
+      surface_full.blit(viewport_surface_left, (0, 0))
       pygame.draw.rect(surface_full, rect_color, (rect_x, rect_y, rect_width, rect_height))
       
 
