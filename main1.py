@@ -171,18 +171,14 @@ tile = 10
 w, h = width //tile, height // tile
 fps = 60 
 simulation_speed = 60 
-
-surface_left = pygame.display.set_mode(viewport_left)
+rect_x, rect_y =  10 , 650
+rect_width, rect_height = 1150, 30
+rect_color = (255, 0, 0)
+surface_full = pygame.display.set_mode(res)
+viewport_surface = pygame.Surface(viewport_left)
+viewport_surface.fill((128, 128, 128)) 
 clock = pygame.time.Clock()
 
-input_box = pygame.Rect(10, height - 40, width - 20, 30)
-color_for_tab = pygame.color.Color("#FFFFFF")
-pygame.draw.rect(surface_left, color_for_tab,[1200, 0, 200, 700])
-font = pygame.font.Font(None, 32)
-text = ''
-color_inactive = pygame.Color('pink')
-color_active = pygame.Color('red')
-active = False
 
 
 
@@ -191,17 +187,14 @@ active = False
 # main loop
 running = True
 while running:
-      txt_surface = font.render(text, True, color_inactive)
-      pygame.draw.rect(surface_left, color_inactive, input_box, 2)
-      surface_left.blit(txt_surface, (input_box.x +5, input_box.y + 5))
+      surface_full.blit(viewport_surface, (0, 0))
+      pygame.draw.rect(surface_full, rect_color, (rect_x, rect_y, rect_width, rect_height))
+      
+
 
 # keystrokes
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                   running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                  if input_box.collidepoint(event.pos):
-                        active = not active
-                        color_inactive = color_active if active else color_inactive
       pygame.display.flip()
       clock.tick(fps)
