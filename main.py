@@ -188,7 +188,6 @@ color_inactive = pygame.Color('lightskyblue3')
 color_active = pygame.Color('dodgerblue2')
 color = color_inactive
 grid_surface = pygame.Surface((width, height), pygame.SRCALPHA)
-grid_surface.fill(pygame.Color('black'))
 active = False
 
 # Game board
@@ -213,6 +212,7 @@ while running:
             if board[y, x] == 1:
                 rect = pygame.Rect(x * tile, y * tile, tile, tile)
                 pygame.draw.rect(surface, pygame.Color('white'), rect)
+                print('cell added')
 
     surface.blit(grid_surface, (0, 0))
     # Render text input box
