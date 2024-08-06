@@ -186,10 +186,13 @@ left_height = viewport_surface_left.get_height()
 
 # grid
 def draw_grid(surface, width, height, tile_size):
-      for x in range(0, width, tile_size):
-            for y in range(0, height, tile_size):
-                  rect = pygame.Rect(x, y, tile_size, tile_size)
-                  pygame.draw.rect(surface, (200, 200, 200), rect, 1)
+      for x in range(0, width, tile):
+            pygame.draw.line(surface, pygame.Color('dimgray'), (x,0), (x, height))
+      for y in range(0, height, tile):
+            pygame.draw.line(surface, pygame.Color('dimgray'),(0,y),(width, y))
+      surface.blit(surface, (0,0))
+
+      
 
 #inputbox
 rect_x = 10
