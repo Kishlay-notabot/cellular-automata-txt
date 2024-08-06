@@ -179,8 +179,12 @@ viewport_right = 200, 700
 viewport_surface_right = pygame.Surface(viewport_right)
 viewport_surface_right.fill((255,255,255)) #white
 #inputbox
-
-
+rect_x = 10
+rect_y = 645  
+rect_width = 1180
+rect_height = 40
+rect_color = (255, 0, 0)  # Red color
+rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 
 
 
@@ -190,7 +194,7 @@ running = True
 while running:
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
-      # pygame.draw.rect(surface_full, rect_color, (rect_x, rect_y, rect_width, rect_height))
+      pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
       
 
 
