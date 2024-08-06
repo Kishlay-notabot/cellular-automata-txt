@@ -165,10 +165,11 @@ def update_board(board, width, height):
 
 
 pygame.init()
+# pygame initialized............................
+
 res = width, height = 1400, 700
 viewport_left = 1200, 700
 tile = 10
-w, h = width //tile, height // tile
 fps = 60 
 simulation_speed = 60
 surface_full = pygame.display.set_mode(res)
@@ -178,6 +179,18 @@ clock = pygame.time.Clock()
 viewport_right = 200, 700
 viewport_surface_right = pygame.Surface(viewport_right)
 viewport_surface_right.fill((255,255,255)) #white
+# both surfaces initialised
+# width and height properties :
+left_width = viewport_surface_left.get_width()
+left_height = viewport_surface_left.get_height()
+
+# grid
+def draw_grid(surface, width, height, tile_size):
+      for x in range(0, width, tile_size):
+            for y in range(0, height, tile_size):
+                  rect = pygame.Rect(x, y, tile_size, tile_size)
+                  pygame.draw.rect(surface, (200, 200, 200), rect, 1)
+
 #inputbox
 rect_x = 10
 rect_y = 645  
@@ -192,6 +205,7 @@ rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 # main loop
 running = True
 while running:
+      draw_grid(viewport_surface_left, left_width, left_height, tile)
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
       pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
