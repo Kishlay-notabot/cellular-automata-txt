@@ -170,10 +170,7 @@ viewport_left = 1200, 700
 tile = 10
 w, h = width //tile, height // tile
 fps = 60 
-simulation_speed = 60 
-rect_x, rect_y =  10 , 650
-rect_width, rect_height = 1150, 30
-rect_color = (255, 0, 0) # red
+simulation_speed = 60
 surface_full = pygame.display.set_mode(res)
 viewport_surface_left = pygame.Surface(viewport_left)
 viewport_surface_left.fill((0,0,0)) # gray
@@ -181,7 +178,7 @@ clock = pygame.time.Clock()
 viewport_right = 200, 700
 viewport_surface_right = pygame.Surface(viewport_right)
 viewport_surface_right.fill((255,255,255)) #white
-# add a viewport surface right for the tab, 200x700
+#inputbox
 
 
 
@@ -193,7 +190,7 @@ running = True
 while running:
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
-      pygame.draw.rect(surface_full, rect_color, (rect_x, rect_y, rect_width, rect_height))
+      # pygame.draw.rect(surface_full, rect_color, (rect_x, rect_y, rect_width, rect_height))
       
 
 
