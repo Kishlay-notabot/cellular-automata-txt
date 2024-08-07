@@ -231,6 +231,6 @@ while running:
                         rect_color = rect_color_active if active else rect_color_inactive
                   else:
                         active = False
-                        rect_color = rect_color_active if active else rect_color_inactive
+                        rect_color = rect_color_inactive
       pygame.display.flip()
       clock.tick(fps)
