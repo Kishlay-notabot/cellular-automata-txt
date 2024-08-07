@@ -181,6 +181,7 @@ viewport_surface_right = pygame.Surface(viewport_right)
 viewport_surface_right.fill((255,255,255)) #white
 # both surfaces initialised
 # width and height properties :
+
 left_width = viewport_surface_left.get_width()
 left_height = viewport_surface_left.get_height()
 
@@ -199,7 +200,12 @@ rect_x = 10
 rect_y = 645  
 rect_width = 1180
 rect_height = 40
-rect_color = (255, 0, 0)  # Red color
+rect_color_active = (255,105,180)
+rect_color_inactive = (255,0,0)
+rect_color = rect_color_active
+active = False
+  # Red color
+
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 
 
@@ -219,5 +225,12 @@ while running:
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                   running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                  if rect.collidepoint(event.pos):
+                        active = not active
+                        rect_color = rect_color_active if active else rect_color_inactive
+                  else:
+                        active = False
+                        rect_color = rect_color_active if active else rect_color_inactive
       pygame.display.flip()
       clock.tick(fps)
