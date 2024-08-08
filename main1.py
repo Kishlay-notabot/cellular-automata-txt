@@ -192,8 +192,14 @@ def draw_grid(surface, width, height, tile_size):
       for y in range(0, height, tile):
             pygame.draw.line(surface, pygame.Color('dimgray'),(0,y),(width, y))
       surface.blit(surface, (0,0))
-
-      
+# draw cells
+def draw_cells():
+      for y in range(left_height):
+            for x in range(left_width):
+                  if board[y,x] == 1:
+                        rect = pygame.Rect(x*tile, y*tile,tile,tile)
+                        pygame.draw.rect(viewport_surface_left, pygame.Color('white'), rect)
+                        print('cell added')
 
 #inputbox
 rect_x = 10
@@ -202,7 +208,7 @@ rect_width = 1180
 rect_height = 40
 rect_color_active = (255,105,180)
 rect_color_inactive = (255,0,0)
-rect_color = rect_color_active
+rect_color = rect_color_inactive
 active = False
   # Red color
 
