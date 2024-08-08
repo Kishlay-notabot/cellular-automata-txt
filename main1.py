@@ -193,13 +193,18 @@ def draw_grid(surface, width, height, tile_size):
             pygame.draw.line(surface, pygame.Color('dimgray'),(0,y),(width, y))
       surface.blit(surface, (0,0))
 # draw cells
+board = np.zeros((left_height, left_width), dtype=int)
 def draw_cells():
       for y in range(left_height):
             for x in range(left_width):
                   if board[y,x] == 1:
-                        rect = pygame.Rect(x*tile, y*tile,tile,tile)
+                        rect = pygame.Rect(x*tile, y*tile,tile,tile) # this todo
                         pygame.draw.rect(viewport_surface_left, pygame.Color('white'), rect)
                         print('cell added')
+# cell variables
+current_x = 10
+current_y = 10
+text = ''
 
 #inputbox
 rect_x = 10
@@ -221,6 +226,7 @@ rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 running = True
 while running:
       draw_grid(viewport_surface_left, left_width, left_height, tile)
+      draw_cells()
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
       pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
@@ -238,5 +244,26 @@ while running:
                   else:
                         active = False
                         rect_color = rect_color_inactive
+            # appending
+            if event.type == pygame.KEYDOWN:
+                  if active:
+                        if event.key == pygame.K_RETURN:
+                              for letter in text:
+                                    if letter == ' ':
+                                          current_x += 1
+                                    else:
+                                          config = letter_configs.get(letter.lower(), [])
+                                          for y, row in enumerate(config):
+                                                for x, value in enumerate(row):
+                                                      board[current_y + y - 1, current_x + x -1] = value
+                                          current_x += len(config[0])+1
+                              text = ''
+                        elif event.key == pygame.K_BACKSPACE:
+                              text = text[:-1]
+                        else:
+                              text += event.unicode
+                                  
+                              
+                              
       pygame.display.flip()
       clock.tick(fps)
