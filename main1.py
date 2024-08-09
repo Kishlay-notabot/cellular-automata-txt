@@ -232,10 +232,11 @@ while running:
       draw_cells()
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
-      pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
+      viewport_surface_left.fill((0, 0, 0)) #clear screen
       txt_surface = font.render(text, True, rect_color_active)
-
       viewport_surface_left.blit(txt_surface, (rect.x+5,rect.y+5))
+      pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
+
 
       
 
@@ -244,6 +245,8 @@ while running:
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                   running = False
+                  pygame.quit()
+                  exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                   if rect.collidepoint(event.pos):
                         active = not active
@@ -266,11 +269,11 @@ while running:
                                           current_x += len(config[0])+1
                               text = ''
                         elif event.key == pygame.K_BACKSPACE:
+                              print('bkps')
                               text = text[:-1]
                         else:
                               text += event.unicode
 
-                              
-                              
+                                                    
       pygame.display.flip()
       clock.tick(fps)
