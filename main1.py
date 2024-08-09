@@ -229,7 +229,7 @@ rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 running = True
 while running:
       draw_grid(viewport_surface_left, left_width, left_height, tile)
-      draw_cells()
+      # draw_cells()
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
       viewport_surface_left.fill((0, 0, 0)) #clear screen
