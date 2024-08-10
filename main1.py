@@ -218,6 +218,7 @@ active = False
 font = pygame.font.Font(None, 32)
 
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
+draw_grid(viewport_surface_left, left_width, left_height, tile)
 
 # font render on textbox
 
@@ -227,17 +228,14 @@ rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 
 # main loop
 running = True
-draw_grid(viewport_surface_left, left_width, left_height, tile)
-
 while running:
       # draw_cells()
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
-      viewport_surface_left.fill((0, 0, 0)) #clear screen
+      pygame.draw.rect(viewport_surface_left, pygame.Color('black'), rect)
+      pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
       txt_surface = font.render(text, True, rect_color_active)
       viewport_surface_left.blit(txt_surface, (rect.x+5,rect.y+5))
-      pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
-
 
       
 
@@ -270,11 +268,11 @@ while running:
                                           current_x += len(config[0])+1
                               text = ''
                         elif event.key == pygame.K_BACKSPACE:
-                              print('bkps')
                               text = text[:-1]
                         else:
                               text += event.unicode
 
-                                                    
+                              
+                              
       pygame.display.flip()
       clock.tick(fps)
