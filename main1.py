@@ -218,7 +218,6 @@ active = False
 font = pygame.font.Font(None, 32)
 
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
-draw_grid(viewport_surface_left, left_width, left_height, tile)
 
 # font render on textbox
 
@@ -229,12 +228,13 @@ draw_grid(viewport_surface_left, left_width, left_height, tile)
 # main loop
 running = True
 while running:
-      # draw_cells()
+      draw_grid(viewport_surface_left, left_width, left_height, tile)
+      draw_cells()
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
-      pygame.draw.rect(viewport_surface_left, pygame.Color('black'), rect)
       pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
       txt_surface = font.render(text, True, rect_color_active)
+
       viewport_surface_left.blit(txt_surface, (rect.x+5,rect.y+5))
 
       
