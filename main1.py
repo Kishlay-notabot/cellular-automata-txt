@@ -215,12 +215,9 @@ rect_color_active = (255,105,180)
 rect_color_inactive = (255,0,0)
 rect_color = rect_color_inactive
 active = False
-font = pygame.font.Font(None, 32)
+  # Red color
 
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
-
-# font render on textbox
-
 
 
 
@@ -233,10 +230,6 @@ while running:
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
       pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
-      txt_surface = font.render(text, True, rect_color_active)
-
-      viewport_surface_left.blit(txt_surface, (rect.x+5,rect.y+5))
-
       
 
 
@@ -244,8 +237,6 @@ while running:
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                   running = False
-                  pygame.quit()
-                  exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                   if rect.collidepoint(event.pos):
                         active = not active
@@ -271,7 +262,7 @@ while running:
                               text = text[:-1]
                         else:
                               text += event.unicode
-
+                                  
                               
                               
       pygame.display.flip()
