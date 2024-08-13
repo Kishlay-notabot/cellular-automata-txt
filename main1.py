@@ -148,6 +148,7 @@ letter_configs = {
 def update_board(board, width, height):
     new_board = np.zeros((height,width), dtype=int)
     for y in range(height):
+      for x in range(width):
         neighbours = 0
         for dy in [-1,0,1]:
             for dx in [-1,0,1]:
@@ -218,7 +219,7 @@ active = False
 font = pygame.font.Font(None, 32)
 
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
-rect_surface = rect_surface = pygame.Surface((rect_width, rect_height), pygame.SRCALPHA)
+rect_surface = pygame.Surface((rect_width, rect_height), pygame.SRCALPHA)
 
 # font render on textbox
 
@@ -276,6 +277,6 @@ while running:
                               text += event.unicode
 
                               
-                              
+      board = update_board(board, left_width, left_height)                        
       pygame.display.flip()
       clock.tick(fps)
