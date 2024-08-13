@@ -200,7 +200,7 @@ def draw_cells():
                   if board[y,x] == 1:
                         rect = pygame.Rect(x*tile, y*tile,tile,tile) # this todo
                         pygame.draw.rect(viewport_surface_left, pygame.Color('white'), rect)
-                        print('cell added')
+                        # print('cell added')
 # cell variables
 current_x = 10
 current_y = 10
@@ -218,6 +218,7 @@ active = False
 font = pygame.font.Font(None, 32)
 
 rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
+rect_surface = rect_surface = pygame.Surface((rect_width, rect_height), pygame.SRCALPHA)
 
 # font render on textbox
 
@@ -233,9 +234,11 @@ while running:
       surface_full.blit(viewport_surface_left, (0, 0))
       surface_full.blit(viewport_surface_right,(1200,0))
       # pygame.draw.rect(viewport_surface_left, rect_color, rect, 2)
+      rect_surface.fill((0, 0, 0, 0))  # Transparent background
+      pygame.draw.rect(rect_surface, rect_color, (0, 0, rect_width, rect_height), 2)
       txt_surface = font.render(text, True, rect_color_active)
-
-      viewport_surface_left.blit(txt_surface, (rect.x+5,rect.y+5))
+      rect_surface.blit(txt_surface, (5, 5))
+      surface_full.blit(rect_surface, (rect_x, rect_y))
 
       
 
