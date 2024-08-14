@@ -145,25 +145,16 @@ letter_configs = {
           [1,1,1,1]]
 }
 
-def update_board(board, width, height):
-    new_board = np.zeros((height,width), dtype=int)
-    for y in range(height):
-      for x in range(width):
-        neighbours = 0
-        for dy in [-1,0,1]:
-            for dx in [-1,0,1]:
-                if dy==0 and dx==0:
-                    continue
-                ny, nx = y +dy, x+dx 
-                if 0 <= ny <height and 0 <= nx < width: 
-                    neighbours += board[ny, nx]
-                    if board[y,x] ==1:
-                        new_board[y,x] = 1 if neighbours ==2 or neighbours == 3 else 0
-                    else:
-                        new_board[y,x] = 1 if neighbours == 3 else 0
-    return new_board
-
-
+def update_board(board):
+      new_board = np.zeros_like(board)
+      for y in range(board.shape[0]):
+            for x in range(board.shape[1]):
+                  neighbours = np.sum(board[max(0, y-1):min(y+2,board.shape[0]), max(0,x-1):min(x+2,board.shape[1])]) -board[y,x]
+                  if board[y,x] ==1 and neighbours in [2,3]:
+                        new_board[y,x] = 1
+                  elif board[y,x] == 0 and neighbours == 3:
+                        new_board[y,x] = 1
+      return new_board
 
 pygame.init()
 # pygame initialized............................
@@ -196,8 +187,8 @@ def draw_grid(surface, width, height, tile_size):
 # draw cells
 board = np.zeros((left_height, left_width), dtype=int)
 def draw_cells():
-      for y in range(left_height):
-            for x in range(left_width):
+      for y in range(board.shape[0]):
+            for x in range(board.shape[1]):
                   if board[y,x] == 1:
                         rect = pygame.Rect(x*tile, y*tile,tile,tile) # this todo
                         pygame.draw.rect(viewport_surface_left, pygame.Color('white'), rect)
@@ -277,6 +268,6 @@ while running:
                               text += event.unicode
 
                               
-      board = update_board(board, left_width, left_height)                        
+      board = update_board(board)                        
       pygame.display.flip()
       clock.tick(fps)
